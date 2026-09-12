@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Site Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+    colors: { primary: { DEFAULT: '#0356cf', foreground: '#eff6ff' } }
+  } } }
+</script>
+<style>body { font-family: 'Poppins', sans-serif; }</style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Login screen -->
+  <div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white rounded-lg shadow p-8 w-full max-w-sm">
+      <h1 class="text-xl font-semibold">Admin Login</h1>
+      <p class="text-sm text-gray-500 mt-1">Enter the site password to edit content.</p>
+      <form id="loginForm" class="mt-6 space-y-3">
+        <input type="password" id="passwordInput" required placeholder="Password"
+          class="w-full border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+        <button type="submit" class="w-full bg-primary text-primary-foreground font-medium rounded-md py-2 text-sm hover:bg-primary/90">
+          Log in
+        </button>
+      </form>
+      <p id="loginError" class="text-sm text-red-600 mt-3 hidden"></p>
+    </div>
+  </div>
+
+  <!-- Editor screen -->
+  <div id="editorScreen" class="hidden">
+    <header class="sticky top-0 z-30 bg-white border-b border-gray-200">
+      <div class="max-w-4xl mx-auto flex items-center justify-between px-4 py-3">
+        <h1 class="font-semibold">Site Admin</h1>
+        <div class="flex items-center gap-3">
+          <span id="publishStatus" class="text-sm text-gray-500"></span>
+          <a href="/" target="_blank" class="text-sm text-primary underline">View live site</a>
+          <button id="publishBtn" class="bg-primary text-primary-foreground text-sm font-medium rounded-md px-4 py-2 hover:bg-primary/90">
+            Publish
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
+
+      <!-- Site & hero fields -->
+      <section class="bg-white rounded-lg border border-gray-200 p-5">
+        <h2 class="font-semibold mb-4">Site &amp; Header</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <label class="text-sm">Brand name
+            <input data-path="site.brandName" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm">Brand tagline
+            <input data-path="site.brandTagline" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm">Call Now phone number
+            <input data-path="site.callNowNumber" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm">Copyright text
+            <input data-path="site.copyright" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm sm:col-span-2">Header logo (image URL, or a path like assets/logos/name.png)
+            <input data-path="site.brandLogo" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-lg border border-gray-200 p-5">
+        <h2 class="font-semibold mb-4">Hero Section</h2>
+        <div class="grid grid-cols-1 gap-4">
+          <label class="text-sm">Badge
+            <input data-path="hero.badge" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm">Heading
+            <input data-path="hero.heading" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm">Subheading
+            <textarea data-path="hero.subheading" rows="2" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm"></textarea>
+          </label>
+          <label class="text-sm">Search box placeholder
+            <input data-path="hero.searchPlaceholder" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-lg border border-gray-200 p-5">
+        <h2 class="font-semibold mb-4">Lead Form</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <label class="text-sm">Form endpoint URL
+            <input data-path="form.endpoint" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm">Form title
+            <input data-path="form.title" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm sm:col-span-2">Form subtitle
+            <input data-path="form.subtitle" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+          <label class="text-sm sm:col-span-2">Success message
+            <input data-path="form.successMessage" class="mt-1 w-full border border-gray-200 rounded-md px-3 py-2 text-sm" />
+          </label>
+        </div>
+      </section>
+
+      <!-- Listings CRUD -->
+      <section class="bg-white rounded-lg border border-gray-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-semibold">University Listings</h2>
+          <button id="addListingBtn" class="text-sm bg-primary text-primary-foreground rounded-md px-3 py-1.5 hover:bg-primary/90">
+            + Add University
+          </button>
+        </div>
+        <div id="listingsEditor" class="space-y-4"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
