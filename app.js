@@ -27,17 +27,19 @@ function starRow(rating, key) {
   return html;
 }
 
-// One rating line: stars, score, review count, and an optional trailing label.
+// One rating line: stars, score, an optional review count, and an optional
+// trailing "(label)" — e.g. "★ 4.8/5 (After 2 years)" with reviews omitted.
 // Five stars from `lg` up; a single star below that, where space is tight.
 function ratingLine(rating, reviews, key, label) {
   const value = rating ?? 0;
+  const showReviews = reviews !== null && reviews !== undefined && reviews !== '';
   return `
     <div class="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 lg:gap-2">
       <span class="hidden lg:flex shrink-0">${starRow(value, key)}</span>
       <span class="flex lg:hidden shrink-0">${starIcon(value > 0 ? 'full' : 'empty')}</span>
       <span class="font-semibold text-sm lg:text-base whitespace-nowrap">${value}<span class="font-normal">/5</span></span>
-      <span class="text-gray-600 text-xs lg:text-sm whitespace-nowrap">${reviews ?? 0} reviews</span>
-      ${label ? `<span class="border border-gray-800 rounded px-1.5 py-0.5 text-[10px] lg:text-xs font-semibold whitespace-nowrap">${label}</span>` : ''}
+      ${showReviews ? `<span class="text-gray-600 text-xs lg:text-sm whitespace-nowrap">${reviews} reviews</span>` : ''}
+      ${label ? `<span class="text-gray-600 text-xs lg:text-sm whitespace-nowrap">(${label})</span>` : ''}
     </div>`;
 }
 
@@ -68,7 +70,7 @@ function cardTemplate(listing, index) {
 
       <div class="border-l border-r sm:border-none col-span-8 sm:col-span-6 lg:col-span-5 flex flex-col justify-center gap-1.5 ps-2 lg:ps-4">
         ${ratingLine(listing.rating, listing.reviews, `${index}-a`, '')}
-        ${ratingLine(listing.rating2, listing.reviews2, `${index}-b`, listing.label2 || '')}
+        ${ratingLine(listing.rating2, null, `${index}-b`, listing.label2 || '')}
       </div>
 
       <a href="tel:${(CONTENT.site.callNowNumber || '').replace(/\s+/g, '')}" class="hidden sm:flex col-span-3 lg:col-span-2 items-center justify-end ps-4 lg:ps-6">
